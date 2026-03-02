@@ -9,12 +9,16 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --vault-black: #0A0A0A;
+      --vault-white: #FDFCFA;
+      --vault-marble: #F8F6F3;
       --vault-gold: #C9A84C;
       --vault-gold-dim: #9B8239;
+      --vault-gold-light: #E5D4A5;
       --vault-cream: #F5F1E8;
-      --vault-gray: #2A2A2A;
-      --vault-light: #CCCCCC;
+      --vault-dark: #1A1A1A;
+      --vault-charcoal: #2D2D2D;
+      --vault-text: #3A3A3A;
+      --vault-text-light: #6B6B6B;
     }
     * {
       margin: 0;
@@ -23,9 +27,29 @@
     }
     body {
       font-family: 'Inter', -apple-system, sans-serif;
-      background: var(--vault-black);
-      color: var(--vault-cream);
+      background: var(--vault-white);
+      color: var(--vault-text);
       overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(135deg, rgba(201,168,76,0.03) 0%, transparent 50%, rgba(201,168,76,0.02) 100%),
+        linear-gradient(45deg, #FDFCFA 0%, #F8F6F3 25%, #FDFCFA 50%, #F5F1E8 75%, #FDFCFA 100%);
+      background-size: 200% 200%, 100% 100%;
+      animation: marbleShift 20s ease infinite;
+      z-index: -1;
+      opacity: 0.9;
+    }
+    @keyframes marbleShift {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
     }
 
     /* NAVIGATION */
@@ -38,9 +62,10 @@
       justify-content: space-between;
       align-items: center;
       z-index: 1000;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid rgba(201,168,76,0.1);
+      background: rgba(253,252,250,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+      box-shadow: 0 2px 20px rgba(201,168,76,0.08);
     }
     .logo {
       font-family: 'Cormorant Garamond', serif;
@@ -59,24 +84,28 @@
       font-weight: 500;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--vault-light);
+      color: var(--vault-text-light);
       text-decoration: none;
-      transition: color 0.3s;
+      transition: all 0.3s;
     }
     .nav-links a:hover {
       color: var(--vault-gold);
     }
     .btn-nav {
       background: var(--vault-gold);
-      color: var(--vault-black);
+      color: var(--vault-white);
       padding: 12px 28px;
       border-radius: 2px;
       font-family: 'Space Mono', monospace;
       font-size: 11px;
       font-weight: 700;
+      box-shadow: 0 4px 12px rgba(201,168,76,0.25);
+      transition: all 0.3s;
     }
     .btn-nav:hover {
       background: var(--vault-gold-dim);
+      box-shadow: 0 6px 20px rgba(201,168,76,0.35);
+      transform: translateY(-1px);
     }
 
     /* HERO */
@@ -88,7 +117,7 @@
       text-align: center;
       padding: 120px 48px 80px;
       position: relative;
-      background: linear-gradient(180deg, var(--vault-black) 0%, #151515 100%);
+      background: linear-gradient(180deg, rgba(253,252,250,0.6) 0%, rgba(248,246,243,0.8) 100%);
     }
     .hero-content {
       max-width: 1100px;
@@ -108,15 +137,16 @@
       font-size: clamp(56px, 9vw, 120px);
       font-weight: 500;
       line-height: 1;
-      color: var(--vault-cream);
+      color: var(--vault-dark);
       margin-bottom: 40px;
       letter-spacing: 0.02em;
+      text-shadow: 0 2px 4px rgba(201,168,76,0.1);
     }
     .hero-subtitle {
       font-size: clamp(18px, 2.5vw, 26px);
       font-weight: 300;
       line-height: 1.6;
-      color: var(--vault-light);
+      color: var(--vault-text);
       max-width: 800px;
       margin: 0 auto 64px;
     }
@@ -128,7 +158,7 @@
     }
     .btn-primary {
       background: var(--vault-gold);
-      color: var(--vault-black);
+      color: var(--vault-white);
       font-family: 'Space Mono', monospace;
       font-size: 12px;
       font-weight: 700;
@@ -136,17 +166,19 @@
       text-transform: uppercase;
       padding: 20px 48px;
       text-decoration: none;
-      transition: all 0.3s;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       border: 2px solid var(--vault-gold);
       display: inline-block;
+      box-shadow: 0 8px 24px rgba(201,168,76,0.3);
     }
     .btn-primary:hover {
-      background: transparent;
-      color: var(--vault-gold);
+      background: var(--vault-gold-dim);
+      box-shadow: 0 12px 32px rgba(201,168,76,0.4);
+      transform: translateY(-2px);
     }
     .btn-secondary {
       background: transparent;
-      color: var(--vault-cream);
+      color: var(--vault-dark);
       font-family: 'Space Mono', monospace;
       font-size: 12px;
       font-weight: 700;
@@ -154,25 +186,28 @@
       text-transform: uppercase;
       padding: 20px 48px;
       text-decoration: none;
-      transition: all 0.3s;
-      border: 2px solid var(--vault-cream);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid var(--vault-dark);
       display: inline-block;
     }
     .btn-secondary:hover {
-      background: var(--vault-cream);
-      color: var(--vault-black);
+      background: var(--vault-dark);
+      color: var(--vault-white);
+      box-shadow: 0 8px 24px rgba(26,26,26,0.2);
+      transform: translateY(-2px);
     }
 
     /* STATS BAR */
     .stats-bar {
-      background: var(--vault-gray);
+      background: linear-gradient(135deg, rgba(248,246,243,0.9) 0%, rgba(245,241,232,0.9) 100%);
       padding: 48px;
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 48px;
       text-align: center;
-      border-top: 1px solid rgba(201,168,76,0.2);
-      border-bottom: 1px solid rgba(201,168,76,0.2);
+      border-top: 2px solid rgba(201,168,76,0.2);
+      border-bottom: 2px solid rgba(201,168,76,0.2);
+      box-shadow: inset 0 2px 8px rgba(201,168,76,0.05);
     }
     .stat-item h3 {
       font-family: 'Cormorant Garamond', serif;
@@ -180,12 +215,13 @@
       font-weight: 600;
       color: var(--vault-gold);
       margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(201,168,76,0.1);
     }
     .stat-item p {
       font-size: 13px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--vault-light);
+      color: var(--vault-text);
     }
 
     /* SECTION COMMON */
@@ -205,19 +241,20 @@
       font-size: clamp(40px, 6vw, 72px);
       font-weight: 500;
       line-height: 1.2;
-      color: var(--vault-cream);
+      color: var(--vault-dark);
       margin-bottom: 32px;
+      text-shadow: 0 2px 4px rgba(201,168,76,0.08);
     }
     .section-description {
       font-size: 18px;
       line-height: 1.8;
-      color: var(--vault-light);
+      color: var(--vault-text);
       max-width: 700px;
     }
 
     /* VALUE PROPS */
     .value-props {
-      background: var(--vault-black);
+      background: rgba(253,252,250,0.5);
       text-align: center;
     }
     .props-grid {
@@ -232,17 +269,21 @@
     .prop-card {
       text-align: center;
       padding: 48px 32px;
-      background: var(--vault-gray);
-      border: 1px solid rgba(201,168,76,0.15);
-      transition: all 0.4s;
+      background: rgba(255,255,255,0.7);
+      border: 2px solid rgba(201,168,76,0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 16px rgba(201,168,76,0.08);
+      backdrop-filter: blur(10px);
     }
     .prop-card:hover {
       border-color: var(--vault-gold);
       transform: translateY(-8px);
+      box-shadow: 0 12px 32px rgba(201,168,76,0.2);
     }
     .prop-icon {
       font-size: 48px;
       margin-bottom: 24px;
+      display: none;
     }
     .prop-card h3 {
       font-family: 'Cormorant Garamond', serif;
@@ -254,12 +295,12 @@
     .prop-card p {
       font-size: 15px;
       line-height: 1.7;
-      color: var(--vault-light);
+      color: var(--vault-text);
     }
 
     /* PLATFORM FEATURES */
     .platform {
-      background: #151515;
+      background: linear-gradient(180deg, rgba(248,246,243,0.6) 0%, rgba(253,252,250,0.4) 100%);
     }
     .platform-grid {
       display: grid;
@@ -271,26 +312,33 @@
       margin-right: auto;
     }
     .feature-card {
-      background: var(--vault-gray);
+      background: rgba(255,255,255,0.6);
       padding: 40px 32px;
-      border-left: 3px solid var(--vault-gold);
+      border-left: 4px solid var(--vault-gold);
+      box-shadow: 0 2px 12px rgba(201,168,76,0.08);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    .feature-card:hover {
+      box-shadow: 0 4px 20px rgba(201,168,76,0.15);
+      transform: translateX(4px);
     }
     .feature-card h4 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 24px;
       font-weight: 600;
-      color: var(--vault-cream);
+      color: var(--vault-dark);
       margin-bottom: 16px;
     }
     .feature-card p {
       font-size: 14px;
       line-height: 1.7;
-      color: var(--vault-light);
+      color: var(--vault-text);
     }
 
     /* PRICING */
     .pricing {
-      background: var(--vault-black);
+      background: rgba(253,252,250,0.5);
       text-align: center;
     }
     .pricing-grid {
@@ -301,19 +349,27 @@
       margin: 80px auto 0;
     }
     .pricing-card {
-      background: var(--vault-gray);
-      border: 2px solid rgba(201,168,76,0.2);
+      background: rgba(255,255,255,0.8);
+      border: 2px solid rgba(201,168,76,0.25);
       padding: 48px 40px;
       text-align: center;
-      transition: all 0.4s;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 20px rgba(201,168,76,0.1);
+      backdrop-filter: blur(10px);
     }
     .pricing-card.featured {
       border-color: var(--vault-gold);
       transform: scale(1.05);
-      background: #1A1A1A;
+      background: linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(248,246,243,0.95) 100%);
+      box-shadow: 0 12px 40px rgba(201,168,76,0.25);
     }
     .pricing-card:hover {
       border-color: var(--vault-gold);
+      box-shadow: 0 8px 32px rgba(201,168,76,0.2);
+      transform: translateY(-4px);
+    }
+    .pricing-card.featured:hover {
+      transform: scale(1.05) translateY(-4px);
     }
     .plan-badge {
       font-family: 'Space Mono', monospace;
@@ -327,7 +383,7 @@
       font-family: 'Cormorant Garamond', serif;
       font-size: 36px;
       font-weight: 600;
-      color: var(--vault-cream);
+      color: var(--vault-dark);
       margin-bottom: 16px;
     }
     .plan-price {
@@ -335,15 +391,16 @@
       font-weight: 700;
       color: var(--vault-gold);
       margin-bottom: 8px;
+      text-shadow: 0 2px 4px rgba(201,168,76,0.1);
     }
     .plan-price span {
       font-size: 18px;
       font-weight: 400;
-      color: var(--vault-light);
+      color: var(--vault-text-light);
     }
     .plan-description {
       font-size: 14px;
-      color: var(--vault-light);
+      color: var(--vault-text);
       margin-bottom: 32px;
       min-height: 60px;
     }
@@ -355,8 +412,8 @@
     .plan-features li {
       padding: 12px 0;
       font-size: 14px;
-      color: var(--vault-light);
-      border-bottom: 1px solid rgba(201,168,76,0.1);
+      color: var(--vault-text);
+      border-bottom: 1px solid rgba(201,168,76,0.15);
     }
     .plan-features li:before {
       content: "✓ ";
@@ -367,10 +424,11 @@
 
     /* ENTERPRISE */
     .enterprise {
-      background: linear-gradient(135deg, #1A1A1A 0%, var(--vault-black) 100%);
+      background: linear-gradient(135deg, rgba(248,246,243,0.8) 0%, rgba(245,241,232,0.9) 100%);
       text-align: center;
-      border-top: 1px solid rgba(201,168,76,0.2);
-      border-bottom: 1px solid rgba(201,168,76,0.2);
+      border-top: 2px solid rgba(201,168,76,0.2);
+      border-bottom: 2px solid rgba(201,168,76,0.2);
+      box-shadow: inset 0 2px 8px rgba(201,168,76,0.05);
     }
     .enterprise-content {
       max-width: 900px;
@@ -392,12 +450,12 @@
     .enterprise-feature p {
       font-size: 14px;
       line-height: 1.6;
-      color: var(--vault-light);
+      color: var(--vault-text);
     }
 
     /* USE CASES */
     .use-cases {
-      background: var(--vault-black);
+      background: rgba(253,252,250,0.5);
     }
     .use-case-grid {
       display: grid;
@@ -410,26 +468,33 @@
     }
     .use-case {
       padding: 40px;
-      background: var(--vault-gray);
-      border-top: 3px solid var(--vault-gold);
+      background: rgba(255,255,255,0.7);
+      border-top: 4px solid var(--vault-gold);
+      box-shadow: 0 4px 16px rgba(201,168,76,0.1);
+      backdrop-filter: blur(8px);
+      transition: all 0.3s;
+    }
+    .use-case:hover {
+      box-shadow: 0 8px 24px rgba(201,168,76,0.18);
+      transform: translateY(-2px);
     }
     .use-case h3 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 28px;
       font-weight: 600;
-      color: var(--vault-cream);
+      color: var(--vault-dark);
       margin-bottom: 16px;
     }
     .use-case p {
       font-size: 15px;
       line-height: 1.7;
-      color: var(--vault-light);
+      color: var(--vault-text);
       margin-bottom: 24px;
     }
     .use-case ul {
       list-style: none;
       font-size: 14px;
-      color: var(--vault-light);
+      color: var(--vault-text);
     }
     .use-case li {
       padding: 8px 0;
@@ -445,15 +510,15 @@
 
     /* WISDOM ARCHIVE */
     .wisdom-archive {
-      background: linear-gradient(180deg, #0A0A0A 0%, #1A1A1A 50%, #0A0A0A 100%);
+      background: linear-gradient(180deg, rgba(253,252,250,0.5) 0%, rgba(248,246,243,0.7) 50%, rgba(253,252,250,0.5) 100%);
       position: relative;
       overflow: hidden;
     }
     .archive-hero {
       text-align: center;
       padding: 120px 48px 80px;
-      background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 100%);
-      border-bottom: 1px solid rgba(201,168,76,0.2);
+      background: linear-gradient(135deg, rgba(201,168,76,0.05) 0%, transparent 100%);
+      border-bottom: 2px solid rgba(201,168,76,0.2);
     }
     .archive-stats {
       display: flex;
@@ -477,7 +542,7 @@
       font-size: 11px;
       letter-spacing: 0.3em;
       text-transform: uppercase;
-      color: var(--vault-light);
+      color: var(--vault-text);
     }
     .archive-features {
       padding: 80px 48px;
@@ -490,36 +555,40 @@
       margin: 0 auto;
     }
     .archive-card {
-      background: var(--vault-gray);
+      background: rgba(255,255,255,0.7);
       padding: 40px 32px;
-      border: 1px solid rgba(201,168,76,0.15);
-      transition: all 0.4s;
+      border: 2px solid rgba(201,168,76,0.2);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 4px 16px rgba(201,168,76,0.08);
+      backdrop-filter: blur(8px);
     }
     .archive-card:hover {
       border-color: var(--vault-gold);
       transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(201,168,76,0.18);
     }
     .archive-card-icon {
       font-size: 40px;
       margin-bottom: 20px;
+      display: none;
     }
     .archive-card h4 {
       font-family: 'Cormorant Garamond', serif;
       font-size: 24px;
       font-weight: 600;
-      color: var(--vault-cream);
+      color: var(--vault-dark);
       margin-bottom: 16px;
     }
     .archive-card p {
       font-size: 14px;
       line-height: 1.7;
-      color: var(--vault-light);
+      color: var(--vault-text);
       margin-bottom: 20px;
     }
     .archive-card ul {
       list-style: none;
       font-size: 13px;
-      color: var(--vault-light);
+      color: var(--vault-text);
     }
     .archive-card li {
       padding: 6px 0;
@@ -534,21 +603,22 @@
       font-weight: 700;
     }
     .archive-cta {
-      background: var(--vault-gray);
+      background: linear-gradient(135deg, rgba(248,246,243,0.9) 0%, rgba(245,241,232,0.9) 100%);
       padding: 80px 48px;
       text-align: center;
-      border-top: 1px solid rgba(201,168,76,0.2);
+      border-top: 2px solid rgba(201,168,76,0.2);
+      box-shadow: inset 0 2px 8px rgba(201,168,76,0.05);
     }
     .archive-cta h3 {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(36px, 5vw, 56px);
       font-weight: 600;
-      color: var(--vault-cream);
+      color: var(--vault-dark);
       margin-bottom: 24px;
     }
     .archive-cta p {
       font-size: 18px;
-      color: var(--vault-light);
+      color: var(--vault-text);
       margin-bottom: 40px;
       max-width: 800px;
       margin-left: auto;
@@ -560,38 +630,43 @@
       background: linear-gradient(135deg, var(--vault-gold-dim) 0%, var(--vault-gold) 100%);
       text-align: center;
       padding: 100px 48px;
+      box-shadow: 0 -4px 20px rgba(201,168,76,0.2);
     }
     .cta-section h2 {
       font-family: 'Cormorant Garamond', serif;
       font-size: clamp(40px, 6vw, 72px);
       font-weight: 600;
-      color: var(--vault-black);
+      color: var(--vault-white);
       margin-bottom: 32px;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
     .cta-section p {
       font-size: 20px;
-      color: rgba(10,10,10,0.8);
+      color: rgba(255,255,255,0.9);
       margin-bottom: 48px;
       max-width: 700px;
       margin-left: auto;
       margin-right: auto;
     }
     .cta-section .btn-primary {
-      background: var(--vault-black);
-      color: var(--vault-gold);
-      border-color: var(--vault-black);
+      background: var(--vault-white);
+      color: var(--vault-gold-dim);
+      border-color: var(--vault-white);
       font-size: 14px;
       padding: 24px 64px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
     }
     .cta-section .btn-primary:hover {
-      background: transparent;
-      color: var(--vault-black);
+      background: var(--vault-dark);
+      color: var(--vault-gold);
+      border-color: var(--vault-dark);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.3);
     }
 
     /* FOOTER */
     footer {
-      background: var(--vault-black);
-      border-top: 1px solid rgba(201,168,76,0.2);
+      background: linear-gradient(180deg, rgba(248,246,243,0.9) 0%, rgba(245,241,232,0.95) 100%);
+      border-top: 2px solid rgba(201,168,76,0.25);
       padding: 80px 48px 40px;
     }
     .footer-grid {
@@ -615,7 +690,7 @@
       margin-bottom: 16px;
     }
     .footer-col a {
-      color: var(--vault-light);
+      color: var(--vault-text);
       text-decoration: none;
       font-size: 14px;
       transition: color 0.3s;
@@ -626,8 +701,8 @@
     .footer-bottom {
       text-align: center;
       padding-top: 40px;
-      border-top: 1px solid rgba(201,168,76,0.1);
-      color: var(--vault-light);
+      border-top: 2px solid rgba(201,168,76,0.15);
+      color: var(--vault-text);
       font-size: 13px;
     }
     .footer-bottom p {
@@ -869,8 +944,8 @@
         <a href="#pricing" class="btn-primary">Create Public Vault</a>
         <a href="#explore-archive" class="btn-secondary">Browse Archive First</a>
       </div>
-      <p style="margin-top: 32px; font-size: 14px; color: rgba(204,204,204,0.6);">
-        🔒 Privacy First: Toggle public/private anytime • 💰 Monetize your wisdom • 🎯 Control what's shared
+      <p style="margin-top: 32px; font-size: 14px; color: var(--vault-text-light);">
+        Privacy First: Toggle public/private anytime • Monetize your wisdom • Control what's shared
       </p>
     </div>
   </section>
@@ -994,8 +1069,8 @@
       </div>
     </div>
 
-    <p style="margin-top: 48px; font-size: 14px; color: var(--vault-light);">
-      🎁 Annual plans save 20% • 💳 All major payment methods accepted • ✓ Cancel anytime, keep your data forever
+    <p style="margin-top: 48px; font-size: 14px; color: var(--vault-text-light);">
+      Annual plans save 20% • All major payment methods accepted • Cancel anytime, keep your data forever
     </p>
   </section>
 
