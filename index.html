@@ -1,0 +1,950 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Vault — Preserve Your Legacy Forever</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --vault-black: #0A0A0A;
+      --vault-gold: #C9A84C;
+      --vault-gold-dim: #9B8239;
+      --vault-cream: #F5F1E8;
+      --vault-gray: #2A2A2A;
+      --vault-light: #CCCCCC;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--vault-black);
+      color: var(--vault-cream);
+      overflow-x: hidden;
+    }
+
+    /* NAVIGATION */
+    nav {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      padding: 24px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--vault-gold);
+      letter-spacing: 0.05em;
+    }
+    .nav-links {
+      display: flex;
+      gap: 48px;
+      align-items: center;
+    }
+    .nav-links a {
+      font-size: 13px;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--vault-light);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover {
+      color: var(--vault-gold);
+    }
+    .btn-nav {
+      background: var(--vault-gold);
+      color: var(--vault-black);
+      padding: 12px 28px;
+      border-radius: 2px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+    }
+    .btn-nav:hover {
+      background: var(--vault-gold-dim);
+    }
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 120px 48px 80px;
+      position: relative;
+      background: linear-gradient(180deg, var(--vault-black) 0%, #151515 100%);
+    }
+    .hero-content {
+      max-width: 1100px;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--vault-gold);
+      margin-bottom: 32px;
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(56px, 9vw, 120px);
+      font-weight: 500;
+      line-height: 1;
+      color: var(--vault-cream);
+      margin-bottom: 40px;
+      letter-spacing: 0.02em;
+    }
+    .hero-subtitle {
+      font-size: clamp(18px, 2.5vw, 26px);
+      font-weight: 300;
+      line-height: 1.6;
+      color: var(--vault-light);
+      max-width: 800px;
+      margin: 0 auto 64px;
+    }
+    .hero-cta {
+      display: flex;
+      gap: 24px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: var(--vault-gold);
+      color: var(--vault-black);
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 20px 48px;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: 2px solid var(--vault-gold);
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: transparent;
+      color: var(--vault-gold);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--vault-cream);
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      padding: 20px 48px;
+      text-decoration: none;
+      transition: all 0.3s;
+      border: 2px solid var(--vault-cream);
+      display: inline-block;
+    }
+    .btn-secondary:hover {
+      background: var(--vault-cream);
+      color: var(--vault-black);
+    }
+
+    /* STATS BAR */
+    .stats-bar {
+      background: var(--vault-gray);
+      padding: 48px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 48px;
+      text-align: center;
+      border-top: 1px solid rgba(201,168,76,0.2);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .stat-item h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 600;
+      color: var(--vault-gold);
+      margin-bottom: 8px;
+    }
+    .stat-item p {
+      font-size: 13px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--vault-light);
+    }
+
+    /* SECTION COMMON */
+    section {
+      padding: 120px 48px;
+    }
+    .section-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--vault-gold);
+      margin-bottom: 24px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 500;
+      line-height: 1.2;
+      color: var(--vault-cream);
+      margin-bottom: 32px;
+    }
+    .section-description {
+      font-size: 18px;
+      line-height: 1.8;
+      color: var(--vault-light);
+      max-width: 700px;
+    }
+
+    /* VALUE PROPS */
+    .value-props {
+      background: var(--vault-black);
+      text-align: center;
+    }
+    .props-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 64px;
+      margin-top: 80px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .prop-card {
+      text-align: center;
+      padding: 48px 32px;
+      background: var(--vault-gray);
+      border: 1px solid rgba(201,168,76,0.15);
+      transition: all 0.4s;
+    }
+    .prop-card:hover {
+      border-color: var(--vault-gold);
+      transform: translateY(-8px);
+    }
+    .prop-icon {
+      font-size: 48px;
+      margin-bottom: 24px;
+    }
+    .prop-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--vault-gold);
+      margin-bottom: 16px;
+    }
+    .prop-card p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--vault-light);
+    }
+
+    /* PLATFORM FEATURES */
+    .platform {
+      background: #151515;
+    }
+    .platform-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 32px;
+      margin-top: 64px;
+      max-width: 1300px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .feature-card {
+      background: var(--vault-gray);
+      padding: 40px 32px;
+      border-left: 3px solid var(--vault-gold);
+    }
+    .feature-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--vault-cream);
+      margin-bottom: 16px;
+    }
+    .feature-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--vault-light);
+    }
+
+    /* PRICING */
+    .pricing {
+      background: var(--vault-black);
+      text-align: center;
+    }
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      max-width: 1200px;
+      margin: 80px auto 0;
+    }
+    .pricing-card {
+      background: var(--vault-gray);
+      border: 2px solid rgba(201,168,76,0.2);
+      padding: 48px 40px;
+      text-align: center;
+      transition: all 0.4s;
+    }
+    .pricing-card.featured {
+      border-color: var(--vault-gold);
+      transform: scale(1.05);
+      background: #1A1A1A;
+    }
+    .pricing-card:hover {
+      border-color: var(--vault-gold);
+    }
+    .plan-badge {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--vault-gold);
+      margin-bottom: 16px;
+    }
+    .plan-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: var(--vault-cream);
+      margin-bottom: 16px;
+    }
+    .plan-price {
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--vault-gold);
+      margin-bottom: 8px;
+    }
+    .plan-price span {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--vault-light);
+    }
+    .plan-description {
+      font-size: 14px;
+      color: var(--vault-light);
+      margin-bottom: 32px;
+      min-height: 60px;
+    }
+    .plan-features {
+      list-style: none;
+      margin-bottom: 40px;
+      text-align: left;
+    }
+    .plan-features li {
+      padding: 12px 0;
+      font-size: 14px;
+      color: var(--vault-light);
+      border-bottom: 1px solid rgba(201,168,76,0.1);
+    }
+    .plan-features li:before {
+      content: "✓ ";
+      color: var(--vault-gold);
+      font-weight: 700;
+      margin-right: 8px;
+    }
+
+    /* ENTERPRISE */
+    .enterprise {
+      background: linear-gradient(135deg, #1A1A1A 0%, var(--vault-black) 100%);
+      text-align: center;
+      border-top: 1px solid rgba(201,168,76,0.2);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .enterprise-content {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .enterprise-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 40px;
+      margin: 64px 0;
+    }
+    .enterprise-feature h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--vault-gold);
+      margin-bottom: 12px;
+    }
+    .enterprise-feature p {
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--vault-light);
+    }
+
+    /* USE CASES */
+    .use-cases {
+      background: var(--vault-black);
+    }
+    .use-case-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 48px;
+      margin-top: 64px;
+      max-width: 1200px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .use-case {
+      padding: 40px;
+      background: var(--vault-gray);
+      border-top: 3px solid var(--vault-gold);
+    }
+    .use-case h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-weight: 600;
+      color: var(--vault-cream);
+      margin-bottom: 16px;
+    }
+    .use-case p {
+      font-size: 15px;
+      line-height: 1.7;
+      color: var(--vault-light);
+      margin-bottom: 24px;
+    }
+    .use-case ul {
+      list-style: none;
+      font-size: 14px;
+      color: var(--vault-light);
+    }
+    .use-case li {
+      padding: 8px 0;
+      padding-left: 24px;
+      position: relative;
+    }
+    .use-case li:before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      color: var(--vault-gold);
+    }
+
+    /* CTA SECTION */
+    .cta-section {
+      background: linear-gradient(135deg, var(--vault-gold-dim) 0%, var(--vault-gold) 100%);
+      text-align: center;
+      padding: 100px 48px;
+    }
+    .cta-section h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(40px, 6vw, 72px);
+      font-weight: 600;
+      color: var(--vault-black);
+      margin-bottom: 32px;
+    }
+    .cta-section p {
+      font-size: 20px;
+      color: rgba(10,10,10,0.8);
+      margin-bottom: 48px;
+      max-width: 700px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .cta-section .btn-primary {
+      background: var(--vault-black);
+      color: var(--vault-gold);
+      border-color: var(--vault-black);
+      font-size: 14px;
+      padding: 24px 64px;
+    }
+    .cta-section .btn-primary:hover {
+      background: transparent;
+      color: var(--vault-black);
+    }
+
+    /* FOOTER */
+    footer {
+      background: var(--vault-black);
+      border-top: 1px solid rgba(201,168,76,0.2);
+      padding: 80px 48px 40px;
+    }
+    .footer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 64px;
+      max-width: 1300px;
+      margin: 0 auto 64px;
+    }
+    .footer-col h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--vault-gold);
+      margin-bottom: 24px;
+    }
+    .footer-col ul {
+      list-style: none;
+    }
+    .footer-col li {
+      margin-bottom: 16px;
+    }
+    .footer-col a {
+      color: var(--vault-light);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+    .footer-col a:hover {
+      color: var(--vault-gold);
+    }
+    .footer-bottom {
+      text-align: center;
+      padding-top: 40px;
+      border-top: 1px solid rgba(201,168,76,0.1);
+      color: var(--vault-light);
+      font-size: 13px;
+    }
+    .footer-bottom p {
+      margin-bottom: 8px;
+    }
+
+    @media (max-width: 768px) {
+      nav {
+        padding: 20px 24px;
+      }
+      .nav-links {
+        gap: 24px;
+      }
+      .nav-links a {
+        font-size: 11px;
+      }
+      section {
+        padding: 80px 24px;
+      }
+      .hero {
+        padding: 100px 24px 60px;
+      }
+      .stats-bar {
+        padding: 32px 24px;
+        gap: 32px;
+      }
+      .pricing-card.featured {
+        transform: scale(1);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVIGATION -->
+  <nav>
+    <div class="logo">LIFE VAULT</div>
+    <div class="nav-links">
+      <a href="#platform">Platform</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#enterprise">Enterprise</a>
+      <a href="#contact" class="btn-nav">Get Started</a>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-label">Digital Legacy Preservation</p>
+      <h1 class="hero-title">Your Legacy.<br>Forever Protected.</h1>
+      <p class="hero-subtitle">Life Vault is the institutional-grade platform for preserving and sharing your most valuable memories, stories, and wisdom across generations.</p>
+      <div class="hero-cta">
+        <a href="#pricing" class="btn-primary">Start Your Vault</a>
+        <a href="#platform" class="btn-secondary">Explore Platform</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAR -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <h3>100+</h3>
+      <p>Years Guaranteed</p>
+    </div>
+    <div class="stat-item">
+      <h3>256-Bit</h3>
+      <p>Encryption</p>
+    </div>
+    <div class="stat-item">
+      <h3>99.99%</h3>
+      <p>Uptime SLA</p>
+    </div>
+    <div class="stat-item">
+      <h3>10,000+</h3>
+      <p>Families Protected</p>
+    </div>
+  </div>
+
+  <!-- VALUE PROPOSITIONS -->
+  <section class="value-props">
+    <p class="section-label">The Life Vault Difference</p>
+    <h2 class="section-title">More Than Digital Storage</h2>
+    <div class="props-grid">
+      <div class="prop-card">
+        <div class="prop-icon">🔐</div>
+        <h3>Military-Grade Security</h3>
+        <p>Your memories are protected with bank-level encryption, multi-factor authentication, and distributed backup systems across multiple continents.</p>
+      </div>
+      <div class="prop-card">
+        <div class="prop-icon">⏳</div>
+        <h3>Generational Access</h3>
+        <p>Create time-locked content that unlocks for future generations. Share your wisdom when it matters most—graduations, weddings, milestones.</p>
+      </div>
+      <div class="prop-card">
+        <div class="prop-icon">🎯</div>
+        <h3>Smart Organization</h3>
+        <p>AI-powered tagging, facial recognition, and automatic organization. Find any memory instantly with intelligent search.</p>
+      </div>
+      <div class="prop-card">
+        <div class="prop-icon">🌍</div>
+        <h3>Legacy Sharing</h3>
+        <p>Invite family members to contribute. Create collaborative family trees, photo albums, and story collections that span generations.</p>
+      </div>
+      <div class="prop-card">
+        <div class="prop-icon">📚</div>
+        <h3>Story Preservation</h3>
+        <p>Record audio memoirs, video messages, and written stories. Our guided prompts help you capture what matters before it's too late.</p>
+      </div>
+      <div class="prop-card">
+        <div class="prop-icon">♾️</div>
+        <h3>Forever Guarantee</h3>
+        <p>Your vault is guaranteed for 100+ years. We maintain redundant systems and format migration to ensure your legacy survives technological change.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PLATFORM FEATURES -->
+  <section class="platform" id="platform">
+    <div style="text-align: center; max-width: 900px; margin: 0 auto 64px;">
+      <p class="section-label">Platform Capabilities</p>
+      <h2 class="section-title">Everything You Need to Preserve Your Legacy</h2>
+      <p class="section-description" style="margin: 0 auto;">From personal memories to family archives, Life Vault provides institutional-grade tools for every use case.</p>
+    </div>
+    <div class="platform-grid">
+      <div class="feature-card">
+        <h4>Unlimited Storage</h4>
+        <p>Photos, videos, documents, audio recordings—no limits on what you can preserve. All formats supported.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Time Capsules</h4>
+        <p>Schedule future delivery of messages, photos, and videos to loved ones. Perfect for birthdays, anniversaries, and milestones.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Family Tree Integration</h4>
+        <p>Build your family tree with rich media. Connect photos, stories, and documents to every branch of your lineage.</p>
+      </div>
+      <div class="feature-card">
+        <h4>AI Memory Assistant</h4>
+        <p>Ask questions about your vault. "Show me photos from Christmas 2015" or "Find videos with Grandma." AI understands context.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Digital Will & Testament</h4>
+        <p>Designate beneficiaries and executors. Control who gets access and when. Legally binding in all 50 states.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Media Conversion</h4>
+        <p>Send us old photos, VHS tapes, film reels, cassettes—we'll digitize and preserve them in your vault.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Guided Storytelling</h4>
+        <p>Answer prompts about your life story. Our interview system helps you document what matters most.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Multi-Device Sync</h4>
+        <p>Access your vault from any device. iOS, Android, web—everything syncs seamlessly and securely.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Privacy Controls</h4>
+        <p>Granular permissions. Decide who sees what and when. Make content public, private, or family-only.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Emergency Access</h4>
+        <p>Trusted contacts can request access in emergencies. You control the approval process and timeframes.</p>
+      </div>
+      <div class="feature-card">
+        <h4>Export Anytime</h4>
+        <p>Your data is never locked in. Download everything in standard formats anytime. No proprietary file types.</p>
+      </div>
+      <div class="feature-card">
+        <h4>White Glove Support</h4>
+        <p>Concierge service for Premium members. We'll help you organize, digitize, and preserve your entire legacy.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRICING -->
+  <section class="pricing" id="pricing">
+    <p class="section-label">Plans & Pricing</p>
+    <h2 class="section-title">Choose Your Vault</h2>
+    <p class="section-description" style="margin: 0 auto 0;">All plans include our 100-year guarantee, military-grade security, and unlimited family members.</p>
+
+    <div class="pricing-grid">
+      <div class="pricing-card">
+        <p class="plan-badge">Personal</p>
+        <h3 class="plan-name">Essential</h3>
+        <div class="plan-price">$9<span>/mo</span></div>
+        <p class="plan-description">Perfect for individuals starting their digital legacy.</p>
+        <ul class="plan-features">
+          <li>100 GB storage</li>
+          <li>Unlimited photos & videos</li>
+          <li>Basic AI organization</li>
+          <li>5 time capsules/year</li>
+          <li>Mobile & web access</li>
+          <li>Email support</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <p class="plan-badge">Most Popular</p>
+        <h3 class="plan-name">Family</h3>
+        <div class="plan-price">$29<span>/mo</span></div>
+        <p class="plan-description">For families preserving their shared history together.</p>
+        <ul class="plan-features">
+          <li>1 TB storage</li>
+          <li>Everything in Essential</li>
+          <li>Advanced AI features</li>
+          <li>Unlimited time capsules</li>
+          <li>Family tree builder</li>
+          <li>Collaborative albums</li>
+          <li>Priority support</li>
+          <li>Media digitization (20 items/year)</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card">
+        <p class="plan-badge">Premium</p>
+        <h3 class="plan-name">Legacy</h3>
+        <div class="plan-price">$99<span>/mo</span></div>
+        <p class="plan-description">White-glove service for serious legacy preservation.</p>
+        <ul class="plan-features">
+          <li>10 TB storage</li>
+          <li>Everything in Family</li>
+          <li>Dedicated account manager</li>
+          <li>Unlimited media digitization</li>
+          <li>Professional curation service</li>
+          <li>Legal will integration</li>
+          <li>Physical backup drive (annual)</li>
+          <li>24/7 concierge support</li>
+        </ul>
+        <a href="#contact" class="btn-primary">Contact Sales</a>
+      </div>
+    </div>
+
+    <p style="margin-top: 48px; font-size: 14px; color: var(--vault-light);">
+      🎁 Annual plans save 20% • 💳 All major payment methods accepted • ✓ Cancel anytime, keep your data forever
+    </p>
+  </section>
+
+  <!-- ENTERPRISE -->
+  <section class="enterprise" id="enterprise">
+    <div class="enterprise-content">
+      <p class="section-label">Enterprise Solutions</p>
+      <h2 class="section-title">Built for Organizations</h2>
+      <p class="section-description" style="margin: 0 auto 0;">Life Vault Enterprise serves museums, historical societies, universities, law firms, and family offices with institutional-grade archival needs.</p>
+
+      <div class="enterprise-grid">
+        <div class="enterprise-feature">
+          <h4>Unlimited Scale</h4>
+          <p>Petabyte-scale storage with dedicated infrastructure and custom retention policies.</p>
+        </div>
+        <div class="enterprise-feature">
+          <h4>Custom Workflows</h4>
+          <p>Tailor the platform to your organization's specific archival and compliance requirements.</p>
+        </div>
+        <div class="enterprise-feature">
+          <h4>API Access</h4>
+          <p>RESTful API for integration with existing systems. Webhook support for automation.</p>
+        </div>
+        <div class="enterprise-feature">
+          <h4>SSO & SAML</h4>
+          <p>Enterprise authentication with SAML 2.0, Active Directory, and custom identity providers.</p>
+        </div>
+        <div class="enterprise-feature">
+          <h4>Audit Trails</h4>
+          <p>Complete activity logging for compliance. SOC 2 Type II certified with HIPAA compliance available.</p>
+        </div>
+        <div class="enterprise-feature">
+          <h4>White Label</h4>
+          <p>Deploy Life Vault under your own brand. Custom domains, logos, and client portals.</p>
+        </div>
+      </div>
+
+      <a href="#contact" class="btn-primary" style="margin-top: 48px;">Request Enterprise Demo</a>
+    </div>
+  </section>
+
+  <!-- USE CASES -->
+  <section class="use-cases">
+    <div style="text-align: center; max-width: 900px; margin: 0 auto 64px;">
+      <p class="section-label">Use Cases</p>
+      <h2 class="section-title">Built for Every Legacy Story</h2>
+    </div>
+
+    <div class="use-case-grid">
+      <div class="use-case">
+        <h3>Individual Legacy</h3>
+        <p>Preserve your life story for children and grandchildren. Record your journey before memories fade.</p>
+        <ul>
+          <li>Personal memoir creation</li>
+          <li>Photo & video archive</li>
+          <li>Audio life stories</li>
+          <li>Time-locked letters to grandkids</li>
+        </ul>
+      </div>
+
+      <div class="use-case">
+        <h3>Family Archives</h3>
+        <p>Collaborate with siblings, cousins, and relatives to build a comprehensive family history.</p>
+        <ul>
+          <li>Multi-generational trees</li>
+          <li>Shared photo collections</li>
+          <li>Family recipe preservation</li>
+          <li>Reunion planning & memories</li>
+        </ul>
+      </div>
+
+      <div class="use-case">
+        <h3>Estate Planning</h3>
+        <p>Ensure your digital assets and memories are properly distributed according to your wishes.</p>
+        <ul>
+          <li>Digital will creation</li>
+          <li>Beneficiary designation</li>
+          <li>Executor access controls</li>
+          <li>Legal compliance tools</li>
+        </ul>
+      </div>
+
+      <div class="use-case">
+        <h3>Cultural Preservation</h3>
+        <p>Museums, societies, and institutions preserving cultural heritage and historical artifacts.</p>
+        <ul>
+          <li>Artifact digitization</li>
+          <li>Oral history projects</li>
+          <li>Public/private collections</li>
+          <li>Educational access portals</li>
+        </ul>
+      </div>
+
+      <div class="use-case">
+        <h3>Business Legacy</h3>
+        <p>Entrepreneurs and family businesses documenting their journey and institutional knowledge.</p>
+        <ul>
+          <li>Company history preservation</li>
+          <li>Founder story documentation</li>
+          <li>Knowledge transfer systems</li>
+          <li>Succession planning</li>
+        </ul>
+      </div>
+
+      <div class="use-case">
+        <h3>Community Archives</h3>
+        <p>Neighborhoods, churches, and communities preserving their collective memory.</p>
+        <ul>
+          <li>Event documentation</li>
+          <li>Community photo sharing</li>
+          <li>Local history projects</li>
+          <li>Memorial collections</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FINAL CTA -->
+  <section class="cta-section" id="contact">
+    <h2>Start Preserving Your Legacy Today</h2>
+    <p>Join 10,000+ families protecting their most precious memories with Life Vault. 30-day free trial, no credit card required.</p>
+    <a href="https://app.lifevault.com/signup" class="btn-primary">Create Your Vault →</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#platform">Platform Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+          <li><a href="#enterprise">Enterprise</a></li>
+          <li><a href="#">Mobile Apps</a></li>
+          <li><a href="#">API Docs</a></li>
+          <li><a href="#">Security</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Use Cases</h4>
+        <ul>
+          <li><a href="#">Personal Legacy</a></li>
+          <li><a href="#">Family Archives</a></li>
+          <li><a href="#">Estate Planning</a></li>
+          <li><a href="#">Museums & Societies</a></li>
+          <li><a href="#">Business Continuity</a></li>
+          <li><a href="#">Legal & Compliance</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Press Kit</a></li>
+          <li><a href="#">Partner Program</a></li>
+          <li><a href="#">Affiliate Program</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Video Tutorials</a></li>
+          <li><a href="#">Community Forum</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Legacy Guide (eBook)</a></li>
+          <li><a href="#">Digitization Services</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#">Terms of Service</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Data Protection (GDPR)</a></li>
+          <li><a href="#">Accessibility</a></li>
+          <li><a href="#">100-Year Guarantee</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 Life Vault Technologies, Inc. All rights reserved.</p>
+      <p style="margin-top: 16px; font-size: 12px; color: rgba(201,168,76,0.6);">Strategy & Development: Vision Farm™</p>
+    </div>
+  </footer>
+
+</body>
+</html>
