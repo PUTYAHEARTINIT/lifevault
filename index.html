@@ -443,6 +443,118 @@
       color: var(--vault-gold);
     }
 
+    /* WISDOM ARCHIVE */
+    .wisdom-archive {
+      background: linear-gradient(180deg, #0A0A0A 0%, #1A1A1A 50%, #0A0A0A 100%);
+      position: relative;
+      overflow: hidden;
+    }
+    .archive-hero {
+      text-align: center;
+      padding: 120px 48px 80px;
+      background: linear-gradient(135deg, rgba(201,168,76,0.08) 0%, transparent 100%);
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .archive-stats {
+      display: flex;
+      justify-content: center;
+      gap: 64px;
+      flex-wrap: wrap;
+      margin-top: 48px;
+    }
+    .archive-stat {
+      text-align: center;
+    }
+    .archive-stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px;
+      font-weight: 600;
+      color: var(--vault-gold);
+      margin-bottom: 8px;
+    }
+    .archive-stat-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--vault-light);
+    }
+    .archive-features {
+      padding: 80px 48px;
+    }
+    .archive-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 32px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+    .archive-card {
+      background: var(--vault-gray);
+      padding: 40px 32px;
+      border: 1px solid rgba(201,168,76,0.15);
+      transition: all 0.4s;
+    }
+    .archive-card:hover {
+      border-color: var(--vault-gold);
+      transform: translateY(-4px);
+    }
+    .archive-card-icon {
+      font-size: 40px;
+      margin-bottom: 20px;
+    }
+    .archive-card h4 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--vault-cream);
+      margin-bottom: 16px;
+    }
+    .archive-card p {
+      font-size: 14px;
+      line-height: 1.7;
+      color: var(--vault-light);
+      margin-bottom: 20px;
+    }
+    .archive-card ul {
+      list-style: none;
+      font-size: 13px;
+      color: var(--vault-light);
+    }
+    .archive-card li {
+      padding: 6px 0;
+      padding-left: 20px;
+      position: relative;
+    }
+    .archive-card li:before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--vault-gold);
+      font-weight: 700;
+    }
+    .archive-cta {
+      background: var(--vault-gray);
+      padding: 80px 48px;
+      text-align: center;
+      border-top: 1px solid rgba(201,168,76,0.2);
+    }
+    .archive-cta h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 600;
+      color: var(--vault-cream);
+      margin-bottom: 24px;
+    }
+    .archive-cta p {
+      font-size: 18px;
+      color: var(--vault-light);
+      margin-bottom: 40px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
     /* CTA SECTION */
     .cta-section {
       background: linear-gradient(135deg, var(--vault-gold-dim) 0%, var(--vault-gold) 100%);
@@ -554,6 +666,7 @@
   <nav>
     <div class="logo">LIFE VAULT</div>
     <div class="nav-links">
+      <a href="#archive">Archive</a>
       <a href="#platform">Platform</a>
       <a href="#pricing">Pricing</a>
       <a href="#enterprise">Enterprise</a>
@@ -629,6 +742,136 @@
         <h3>Forever Guarantee</h3>
         <p>Your vault is guaranteed for 100+ years. We maintain redundant systems and format migration to ensure your legacy survives technological change.</p>
       </div>
+    </div>
+  </section>
+
+  <!-- THE WISDOM ARCHIVE -->
+  <section class="wisdom-archive" id="archive">
+    <div class="archive-hero">
+      <p class="section-label">The Wisdom Archive</p>
+      <h2 class="section-title">Learn From 10,000+ Lives<br>Lived & Documented</h2>
+      <p class="section-description" style="margin: 0 auto;">The world's largest database of lived experience. Discover mentors, study journeys, and learn from those who came before. Every public vault is a masterclass in resilience, wisdom, and human experience.</p>
+
+      <div class="archive-stats">
+        <div class="archive-stat">
+          <div class="archive-stat-number">12,847</div>
+          <div class="archive-stat-label">Public Vaults</div>
+        </div>
+        <div class="archive-stat">
+          <div class="archive-stat-number">247</div>
+          <div class="archive-stat-label">Professions</div>
+        </div>
+        <div class="archive-stat">
+          <div class="archive-stat-number">89</div>
+          <div class="archive-stat-label">Countries</div>
+        </div>
+        <div class="archive-stat">
+          <div class="archive-stat-number">1.2M</div>
+          <div class="archive-stat-label">Stories Shared</div>
+        </div>
+      </div>
+
+      <a href="#explore-archive" class="btn-primary" style="margin-top: 48px;">Explore The Archive →</a>
+    </div>
+
+    <div class="archive-features">
+      <div style="text-align: center; max-width: 900px; margin: 0 auto 64px;">
+        <p class="section-label">Discovery & Learning</p>
+        <h2 class="section-title">Find Your Mentors</h2>
+        <p class="section-description" style="margin: 0 auto;">Whether you're a student, researcher, entrepreneur, or simply curious—discover life stories that inspire, educate, and guide.</p>
+      </div>
+
+      <div class="archive-grid">
+        <div class="archive-card">
+          <div class="archive-card-icon">🔍</div>
+          <h4>Browse by Journey</h4>
+          <p>Discover vaults organized by the paths people took and challenges they overcame.</p>
+          <ul>
+            <li>Career transitions & pivots</li>
+            <li>Overcoming adversity</li>
+            <li>Building businesses from scratch</li>
+            <li>Artistic & creative journeys</li>
+            <li>Life-changing decisions</li>
+          </ul>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-card-icon">🎓</div>
+          <h4>Academic & Research</h4>
+          <p>Primary sources for historians, sociologists, and students studying real lives.</p>
+          <ul>
+            <li>Oral history projects</li>
+            <li>Cultural documentation</li>
+            <li>Generational studies</li>
+            <li>Biography research</li>
+            <li>Documentary sourcing</li>
+          </ul>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-card-icon">💼</div>
+          <h4>Professional Development</h4>
+          <p>Learn from founders, executives, and industry pioneers who documented their journeys.</p>
+          <ul>
+            <li>Startup founder stories</li>
+            <li>Leadership lessons</li>
+            <li>Industry evolution</li>
+            <li>Career strategy</li>
+            <li>Networking wisdom</li>
+          </ul>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-card-icon">🧭</div>
+          <h4>Life Guidance</h4>
+          <p>People who faced similar challenges and documented how they navigated them.</p>
+          <ul>
+            <li>Major life transitions</li>
+            <li>Health challenges</li>
+            <li>Relationship wisdom</li>
+            <li>Parenting journeys</li>
+            <li>Finding purpose</li>
+          </ul>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-card-icon">🌍</div>
+          <h4>Cultural Heritage</h4>
+          <p>Preserve and explore diverse cultural narratives from around the world.</p>
+          <ul>
+            <li>Immigration stories</li>
+            <li>Indigenous knowledge</li>
+            <li>Diaspora experiences</li>
+            <li>Tradition preservation</li>
+            <li>Cultural exchange</li>
+          </ul>
+        </div>
+
+        <div class="archive-card">
+          <div class="archive-card-icon">🎨</div>
+          <h4>Creative Inspiration</h4>
+          <p>Artists, writers, musicians, and creators sharing their processes and breakthroughs.</p>
+          <ul>
+            <li>Creative workflows</li>
+            <li>Overcoming blocks</li>
+            <li>Finding your voice</li>
+            <li>Building an audience</li>
+            <li>Sustaining creativity</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="archive-cta">
+      <h3>Make Your Wisdom Accessible</h3>
+      <p>Your life story has value. By making your vault public, you become a mentor to thousands—students studying your field, people facing similar challenges, and future generations seeking wisdom. You control what's shared, when, and with whom.</p>
+      <div style="display: flex; gap: 24px; justify-content: center; flex-wrap: wrap; margin-top: 48px;">
+        <a href="#pricing" class="btn-primary">Create Public Vault</a>
+        <a href="#explore-archive" class="btn-secondary">Browse Archive First</a>
+      </div>
+      <p style="margin-top: 32px; font-size: 14px; color: rgba(204,204,204,0.6);">
+        🔒 Privacy First: Toggle public/private anytime • 💰 Monetize your wisdom • 🎯 Control what's shared
+      </p>
     </div>
   </section>
 
@@ -883,6 +1126,7 @@
       <div class="footer-col">
         <h4>Product</h4>
         <ul>
+          <li><a href="#archive">The Wisdom Archive</a></li>
           <li><a href="#platform">Platform Features</a></li>
           <li><a href="#pricing">Pricing</a></li>
           <li><a href="#enterprise">Enterprise</a></li>
