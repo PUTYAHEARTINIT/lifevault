@@ -415,6 +415,88 @@
       border-color: var(--vault-gold);
       box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
     }
+    .vault-detail-content {
+      max-height: 70vh;
+      overflow-y: auto;
+    }
+    .content-section {
+      margin-bottom: 32px;
+    }
+    .content-section h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      color: var(--vault-gold);
+      margin-bottom: 16px;
+      border-bottom: 2px solid rgba(201,168,76,0.2);
+      padding-bottom: 8px;
+    }
+    .file-item, .message-item {
+      background: rgba(255,255,255,0.6);
+      border: 2px solid rgba(201,168,76,0.2);
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: all 0.3s;
+    }
+    .file-item:hover, .message-item:hover {
+      border-color: var(--vault-gold);
+      box-shadow: 0 4px 12px rgba(201,168,76,0.15);
+    }
+    .file-item h4, .message-item h4 {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      color: var(--vault-dark);
+      margin-bottom: 8px;
+    }
+    .file-item p, .message-item p {
+      font-size: 13px;
+      color: var(--vault-text-light);
+      margin-bottom: 12px;
+    }
+    .file-meta, .message-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--vault-text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .btn-download {
+      display: inline-block;
+      padding: 8px 16px;
+      background: var(--vault-gold);
+      color: var(--vault-white);
+      text-decoration: none;
+      border-radius: 4px;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+      border: none;
+      cursor: pointer;
+    }
+    .btn-download:hover {
+      background: var(--vault-gold-dim);
+      transform: translateY(-2px);
+    }
+    .empty-state {
+      text-align: center;
+      padding: 40px;
+      color: var(--vault-text-light);
+      font-size: 14px;
+    }
+    .locked-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.2);
+      color: var(--vault-gold-dim);
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      margin-left: 8px;
+    }
   </style>
 </head>
 <body>
@@ -553,6 +635,24 @@
         </div>
         <button type="submit" class="btn btn-primary">Lock Until Date</button>
       </form>
+    </div>
+  </div>
+
+  <!-- VAULT DETAIL MODAL -->
+  <div id="vault-detail-modal" class="modal hidden">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="modal-header">
+        <div>
+          <h2 id="vault-detail-title">Vault Contents</h2>
+          <p id="vault-detail-description" style="margin: 4px 0 0 0; font-size: 14px; color: var(--vault-text-light);"></p>
+        </div>
+        <button class="modal-close" onclick="closeVaultDetail()">&times;</button>
+      </div>
+      <div class="vault-detail-content" id="vault-detail-content">
+        <div style="text-align: center; padding: 40px;">
+          <p style="color: var(--vault-text-light);">Loading...</p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -737,12 +837,14 @@
         const card = document.createElement('div');
         card.className = 'vault-card';
         card.innerHTML = `
-          <h3>${vault.title}</h3>
-          <p>${vault.description || 'No description'}</p>
-          <div class="vault-meta">Created ${new Date(vault.created_at).toLocaleDateString()}</div>
+          <div onclick="openVaultDetail('${vault.id}')" style="cursor: pointer;">
+            <h3>${vault.title}</h3>
+            <p>${vault.description || 'No description'}</p>
+            <div class="vault-meta">Created ${new Date(vault.created_at).toLocaleDateString()}</div>
+          </div>
           <div class="vault-actions">
-            <button onclick="openUploadFile('${vault.id}')">📤 Upload</button>
-            <button onclick="openTimeLock('${vault.id}')">⏰ Time Lock</button>
+            <button onclick="event.stopPropagation(); openUploadFile('${vault.id}')">📤 Upload</button>
+            <button onclick="event.stopPropagation(); openTimeLock('${vault.id}')">⏰ Time Lock</button>
           </div>
         `;
         grid.appendChild(card);
@@ -795,6 +897,168 @@
         console.error('Create vault error:', error);
       }
     });
+
+    // ========================================
+    // VAULT DETAIL VIEW
+    // ========================================
+
+    async function openVaultDetail(vaultId) {
+      currentVaultId = vaultId;
+      document.getElementById('vault-detail-modal').classList.remove('hidden');
+
+      // Show loading state
+      document.getElementById('vault-detail-content').innerHTML = `
+        <div style="text-align: center; padding: 40px;">
+          <p style="color: var(--vault-text-light);">Loading vault contents...</p>
+        </div>
+      `;
+
+      try {
+        // Fetch vault details
+        const vaultResponse = await fetch(`${API_BASE_URL}/api/vaults/${vaultId}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+        const vaultData = await vaultResponse.json();
+
+        if (vaultData.success) {
+          document.getElementById('vault-detail-title').textContent = vaultData.data.title;
+          document.getElementById('vault-detail-description').textContent = vaultData.data.description || '';
+        }
+
+        // Fetch files (we need to add this endpoint or get from vault data)
+        const filesResponse = await fetch(`${API_BASE_URL}/api/vaults/${vaultId}/files`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        // Fetch time-locked messages
+        const messagesResponse = await fetch(`${API_BASE_URL}/api/vaults/${vaultId}/time-locked`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        let files = [];
+        let messages = [];
+
+        if (filesResponse.ok) {
+          const filesData = await filesResponse.json();
+          files = filesData.success ? filesData.data : [];
+        }
+
+        if (messagesResponse.ok) {
+          const messagesData = await messagesResponse.json();
+          messages = messagesData.success ? messagesData.data : [];
+        }
+
+        renderVaultContents(files, messages);
+      } catch (error) {
+        console.error('Error loading vault:', error);
+        document.getElementById('vault-detail-content').innerHTML = `
+          <div class="empty-state">
+            <p>Error loading vault contents</p>
+          </div>
+        `;
+      }
+    }
+
+    function closeVaultDetail() {
+      document.getElementById('vault-detail-modal').classList.add('hidden');
+      currentVaultId = null;
+    }
+
+    function renderVaultContents(files, messages) {
+      const container = document.getElementById('vault-detail-content');
+      let html = '';
+
+      // Files section
+      html += '<div class="content-section">';
+      html += '<h3>📁 Files & Media</h3>';
+
+      if (files.length === 0) {
+        html += '<div class="empty-state"><p>No files uploaded yet</p></div>';
+      } else {
+        files.forEach(file => {
+          const uploadDate = new Date(file.uploaded_at).toLocaleDateString();
+          const fileSize = (file.file_size / 1024 / 1024).toFixed(2);
+          html += `
+            <div class="file-item">
+              <h4>📄 ${file.file_name}</h4>
+              ${file.description ? `<p>${file.description}</p>` : ''}
+              <div class="file-meta">
+                ${fileSize} MB • Uploaded ${uploadDate} • Encrypted 🔐
+              </div>
+              <button class="btn-download" onclick="downloadFile('${file.id}', '${file.file_name}')">
+                Download
+              </button>
+            </div>
+          `;
+        });
+      }
+      html += '</div>';
+
+      // Time-locked messages section
+      html += '<div class="content-section">';
+      html += '<h3>⏰ Time-Locked Messages</h3>';
+
+      if (messages.length === 0) {
+        html += '<div class="empty-state"><p>No time-locked messages yet</p></div>';
+      } else {
+        const now = new Date();
+        messages.forEach(msg => {
+          const unlockDate = new Date(msg.unlock_date);
+          const isUnlocked = now >= unlockDate;
+          const dateStr = unlockDate.toLocaleDateString() + ' at ' + unlockDate.toLocaleTimeString();
+
+          html += `
+            <div class="message-item">
+              <h4>${msg.title || 'Untitled Message'}${isUnlocked ? '' : '<span class="locked-badge">🔒 Locked</span>'}</h4>
+              ${isUnlocked ? `<p>${msg.content}</p>` : `<p style="font-style: italic; color: var(--vault-text-light);">This message will unlock on ${dateStr}</p>`}
+              <div class="message-meta">
+                ${isUnlocked ? 'Unlocked' : 'Unlocks'} ${dateStr}
+              </div>
+            </div>
+          `;
+        });
+      }
+      html += '</div>';
+
+      // Quick actions
+      html += `
+        <div style="display: flex; gap: 12px; margin-top: 32px; padding-top: 24px; border-top: 2px solid rgba(201,168,76,0.2);">
+          <button class="btn btn-primary" onclick="closeVaultDetail(); openUploadFile('${currentVaultId}')" style="flex: 1;">
+            📤 Upload File
+          </button>
+          <button class="btn btn-primary" onclick="closeVaultDetail(); openTimeLock('${currentVaultId}')" style="flex: 1;">
+            ⏰ Add Time Lock
+          </button>
+        </div>
+      `;
+
+      container.innerHTML = html;
+    }
+
+    async function downloadFile(fileId, fileName) {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/files/${fileId}`, {
+          headers: { 'Authorization': `Bearer ${authToken}` }
+        });
+
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = fileName;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+        } else {
+          alert('Failed to download file');
+        }
+      } catch (error) {
+        console.error('Download error:', error);
+        alert('Error downloading file');
+      }
+    }
 
     // ========================================
     // FILE UPLOAD
