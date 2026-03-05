@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Life Vault — Your Digital Legacy</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Space+Mono:wght@400;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --vault-white: #FDFCFA;
+      --vault-marble: #F8F6F3;
+      --vault-gold: #C9A84C;
+      --vault-gold-dim: #9B8239;
+      --vault-gold-light: #E5D4A5;
+      --vault-cream: #F5F1E8;
+      --vault-dark: #1A1A1A;
+      --vault-charcoal: #2D2D2D;
+      --vault-text: #3A3A3A;
+      --vault-text-light: #6B6B6B;
+    }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Inter', -apple-system, sans-serif;
+      background: var(--vault-white);
+      color: var(--vault-text);
+      overflow-x: hidden;
+      position: relative;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(135deg, rgba(201,168,76,0.03) 0%, transparent 50%, rgba(201,168,76,0.02) 100%),
+        linear-gradient(45deg, #FDFCFA 0%, #F8F6F3 25%, #FDFCFA 50%, #F5F1E8 75%, #FDFCFA 100%);
+      background-size: 200% 200%, 100% 100%;
+      animation: marbleShift 20s ease infinite;
+      z-index: -1;
+      opacity: 0.9;
+    }
+    @keyframes marbleShift {
+      0%, 100% { background-position: 0% 0%; }
+      50% { background-position: 100% 100%; }
+    }
+
+    .hidden { display: none !important; }
+
+    /* Auth Screen */
+    .auth-container {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px;
+    }
+    .auth-box {
+      background: rgba(255,255,255,0.95);
+      backdrop-filter: blur(20px);
+      border: 2px solid var(--vault-gold);
+      border-radius: 12px;
+      padding: 56px 48px;
+      max-width: 480px;
+      width: 100%;
+      box-shadow: 0 20px 60px rgba(201,168,76,0.15);
+    }
+    .auth-box h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      color: var(--vault-gold);
+      margin-bottom: 12px;
+      text-align: center;
+    }
+    .auth-box p {
+      text-align: center;
+      color: var(--vault-text-light);
+      margin-bottom: 36px;
+      font-size: 15px;
+    }
+    .form-group {
+      margin-bottom: 24px;
+    }
+    .form-group label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--vault-text);
+      margin-bottom: 8px;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid rgba(201,168,76,0.2);
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--vault-text);
+      background: var(--vault-white);
+      transition: all 0.3s;
+    }
+    .form-group input:focus {
+      outline: none;
+      border-color: var(--vault-gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+    }
+    .btn {
+      width: 100%;
+      padding: 16px;
+      border: none;
+      border-radius: 6px;
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .btn-primary {
+      background: var(--vault-gold);
+      color: var(--vault-white);
+    }
+    .btn-primary:hover {
+      background: var(--vault-gold-dim);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(201,168,76,0.3);
+    }
+    .btn-secondary {
+      background: transparent;
+      color: var(--vault-gold);
+      border: 2px solid var(--vault-gold);
+      margin-top: 12px;
+    }
+    .btn-secondary:hover {
+      background: var(--vault-gold);
+      color: var(--vault-white);
+    }
+    .error-message {
+      background: rgba(220,53,69,0.1);
+      color: #dc3545;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      border-left: 4px solid #dc3545;
+    }
+    .success-message {
+      background: rgba(40,167,69,0.1);
+      color: #28a745;
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      border-left: 4px solid #28a745;
+    }
+
+    /* Dashboard */
+    .dashboard {
+      min-height: 100vh;
+      padding: 24px;
+    }
+    .dashboard-header {
+      max-width: 1200px;
+      margin: 0 auto 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255,255,255,0.95);
+      padding: 24px 32px;
+      border-radius: 12px;
+      border: 2px solid var(--vault-gold);
+      backdrop-filter: blur(20px);
+    }
+    .dashboard-header h1 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 32px;
+      color: var(--vault-gold);
+    }
+    .dashboard-header button {
+      padding: 12px 24px;
+      background: transparent;
+      border: 2px solid var(--vault-gold);
+      color: var(--vault-gold);
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .dashboard-header button:hover {
+      background: var(--vault-gold);
+      color: var(--vault-white);
+    }
+    .dashboard-content {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .vaults-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .vault-card {
+      background: rgba(255,255,255,0.95);
+      padding: 32px;
+      border-radius: 12px;
+      border: 2px solid rgba(201,168,76,0.3);
+      backdrop-filter: blur(20px);
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .vault-card:hover {
+      border-color: var(--vault-gold);
+      box-shadow: 0 12px 32px rgba(201,168,76,0.2);
+      transform: translateY(-4px);
+    }
+    .vault-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      color: var(--vault-dark);
+      margin-bottom: 8px;
+    }
+    .vault-card p {
+      color: var(--vault-text-light);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+    .vault-card .vault-meta {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--vault-text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .create-vault-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 240px;
+      border-style: dashed;
+    }
+    .create-vault-card:hover {
+      background: rgba(201,168,76,0.05);
+    }
+    .create-vault-card span {
+      font-size: 64px;
+      color: var(--vault-gold);
+      margin-bottom: 16px;
+    }
+    .create-vault-card h3 {
+      color: var(--vault-gold);
+    }
+
+    /* Modal */
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(26,26,26,0.8);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10000;
+      padding: 24px;
+    }
+    .modal-content {
+      background: var(--vault-white);
+      border: 2px solid var(--vault-gold);
+      border-radius: 12px;
+      padding: 48px;
+      max-width: 560px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 32px;
+    }
+    .modal-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px;
+      color: var(--vault-gold);
+    }
+    .modal-close {
+      font-size: 28px;
+      color: var(--vault-text-light);
+      cursor: pointer;
+      border: none;
+      background: none;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover {
+      color: var(--vault-gold);
+    }
+    textarea {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid rgba(201,168,76,0.2);
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--vault-text);
+      background: var(--vault-white);
+      resize: vertical;
+      min-height: 120px;
+    }
+    textarea:focus {
+      outline: none;
+      border-color: var(--vault-gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- AUTH SCREEN -->
+  <div id="auth-screen" class="auth-container">
+    <div class="auth-box">
+      <h1>Life Vault</h1>
+      <p>Preserve your legacy forever</p>
+
+      <div id="auth-message"></div>
+
+      <div id="login-form">
+        <form id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="login-email" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="login-password" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Login</button>
+        </form>
+        <button class="btn btn-secondary" onclick="showRegister()">Create Account</button>
+      </div>
+
+      <div id="register-form" class="hidden">
+        <form id="registerForm">
+          <div class="form-group">
+            <label>Full Name</label>
+            <input type="text" id="register-name" required>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="register-email" required>
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="register-password" required minlength="6">
+          </div>
+          <button type="submit" class="btn btn-primary">Create Account</button>
+        </form>
+        <button class="btn btn-secondary" onclick="showLogin()">Back to Login</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DASHBOARD -->
+  <div id="dashboard-screen" class="dashboard hidden">
+    <div class="dashboard-header">
+      <div>
+        <h1>Life Vault</h1>
+        <p style="margin: 0; color: var(--vault-text-light); font-size: 14px;">Welcome, <span id="user-name"></span></p>
+      </div>
+      <button onclick="logout()">Logout</button>
+    </div>
+
+    <div class="dashboard-content">
+      <div class="vaults-grid" id="vaults-grid">
+        <div class="vault-card create-vault-card" onclick="openCreateVault()">
+          <span>+</span>
+          <h3>Create New Vault</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CREATE VAULT MODAL -->
+  <div id="create-vault-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Create Vault</h2>
+        <button class="modal-close" onclick="closeCreateVault()">&times;</button>
+      </div>
+      <div id="modal-message"></div>
+      <form id="createVaultForm">
+        <div class="form-group">
+          <label>Vault Name</label>
+          <input type="text" id="vault-name" required placeholder="My Family Legacy">
+        </div>
+        <div class="form-group">
+          <label>Description</label>
+          <textarea id="vault-description" placeholder="Stories, photos, and memories for future generations..."></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Vault</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // API Configuration
+    const API_BASE_URL = 'https://web-production-9381.up.railway.app';
+
+    // Global state
+    let currentUser = null;
+    let authToken = null;
+
+    // Check if user is logged in on page load
+    window.addEventListener('DOMContentLoaded', () => {
+      const token = localStorage.getItem('lifevault_token');
+      const user = localStorage.getItem('lifevault_user');
+
+      if (token && user) {
+        authToken = token;
+        currentUser = JSON.parse(user);
+        showDashboard();
+        loadVaults();
+      }
+    });
+
+    // Show/Hide Auth Forms
+    function showRegister() {
+      document.getElementById('login-form').classList.add('hidden');
+      document.getElementById('register-form').classList.remove('hidden');
+      clearMessage();
+    }
+
+    function showLogin() {
+      document.getElementById('register-form').classList.add('hidden');
+      document.getElementById('login-form').classList.remove('hidden');
+      clearMessage();
+    }
+
+    // Message Display
+    function showMessage(message, isError = false) {
+      const authMessage = document.getElementById('auth-message');
+      const modalMessage = document.getElementById('modal-message');
+      const messageHtml = `<div class="${isError ? 'error-message' : 'success-message'}">${message}</div>`;
+
+      if (authMessage) authMessage.innerHTML = messageHtml;
+      if (modalMessage) modalMessage.innerHTML = messageHtml;
+    }
+
+    function clearMessage() {
+      const authMessage = document.getElementById('auth-message');
+      const modalMessage = document.getElementById('modal-message');
+      if (authMessage) authMessage.innerHTML = '';
+      if (modalMessage) modalMessage.innerHTML = '';
+    }
+
+    // Register
+    document.getElementById('registerForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMessage();
+
+      const fullName = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/auth/register`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ fullName, email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          authToken = data.data.token;
+          currentUser = { userId: data.data.userId, email: data.data.email, fullName: data.data.fullName };
+
+          localStorage.setItem('lifevault_token', authToken);
+          localStorage.setItem('lifevault_user', JSON.stringify(currentUser));
+
+          showMessage('Account created successfully!');
+          setTimeout(() => {
+            showDashboard();
+            loadVaults();
+          }, 1000);
+        } else {
+          showMessage(data.error || 'Registration failed', true);
+        }
+      } catch (error) {
+        showMessage('Network error. Please try again.', true);
+        console.error('Register error:', error);
+      }
+    });
+
+    // Login
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMessage();
+
+      const email = document.getElementById('login-email').value;
+      const password = document.getElementById('login-password').value;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          authToken = data.data.token;
+          currentUser = { userId: data.data.userId, email: data.data.email, fullName: data.data.fullName };
+
+          localStorage.setItem('lifevault_token', authToken);
+          localStorage.setItem('lifevault_user', JSON.stringify(currentUser));
+
+          showMessage('Login successful!');
+          setTimeout(() => {
+            showDashboard();
+            loadVaults();
+          }, 800);
+        } else {
+          showMessage(data.error || 'Login failed', true);
+        }
+      } catch (error) {
+        showMessage('Network error. Please try again.', true);
+        console.error('Login error:', error);
+      }
+    });
+
+    // Logout
+    function logout() {
+      localStorage.removeItem('lifevault_token');
+      localStorage.removeItem('lifevault_user');
+      authToken = null;
+      currentUser = null;
+
+      document.getElementById('dashboard-screen').classList.add('hidden');
+      document.getElementById('auth-screen').classList.remove('hidden');
+      showLogin();
+    }
+
+    // Show Dashboard
+    function showDashboard() {
+      document.getElementById('auth-screen').classList.add('hidden');
+      document.getElementById('dashboard-screen').classList.remove('hidden');
+      document.getElementById('user-name').textContent = currentUser.fullName;
+    }
+
+    // Load Vaults
+    async function loadVaults() {
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/vaults`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          renderVaults(data.data);
+        } else {
+          console.error('Failed to load vaults:', data.error);
+        }
+      } catch (error) {
+        console.error('Load vaults error:', error);
+      }
+    }
+
+    // Render Vaults
+    function renderVaults(vaults) {
+      const grid = document.getElementById('vaults-grid');
+      const createCard = grid.querySelector('.create-vault-card');
+
+      // Clear existing vault cards (keep create card)
+      grid.innerHTML = '';
+      grid.appendChild(createCard);
+
+      vaults.forEach(vault => {
+        const card = document.createElement('div');
+        card.className = 'vault-card';
+        card.innerHTML = `
+          <h3>${vault.name}</h3>
+          <p>${vault.description || 'No description'}</p>
+          <div class="vault-meta">Created ${new Date(vault.created_at).toLocaleDateString()}</div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    // Create Vault Modal
+    function openCreateVault() {
+      document.getElementById('create-vault-modal').classList.remove('hidden');
+      clearMessage();
+    }
+
+    function closeCreateVault() {
+      document.getElementById('create-vault-modal').classList.add('hidden');
+      document.getElementById('createVaultForm').reset();
+      clearMessage();
+    }
+
+    // Create Vault
+    document.getElementById('createVaultForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearMessage();
+
+      const name = document.getElementById('vault-name').value;
+      const description = document.getElementById('vault-description').value;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/vaults`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify({ name, description })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showMessage('Vault created successfully!');
+          setTimeout(() => {
+            closeCreateVault();
+            loadVaults();
+          }, 1000);
+        } else {
+          showMessage(data.error || 'Failed to create vault', true);
+        }
+      } catch (error) {
+        showMessage('Network error. Please try again.', true);
+        console.error('Create vault error:', error);
+      }
+    });
+  </script>
+
+</body>
+</html>
