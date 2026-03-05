@@ -219,7 +219,6 @@
       border-radius: 12px;
       border: 2px solid rgba(201,168,76,0.3);
       backdrop-filter: blur(20px);
-      cursor: pointer;
       transition: all 0.3s;
     }
     .vault-card:hover {
@@ -244,6 +243,31 @@
       color: var(--vault-text-light);
       text-transform: uppercase;
       letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+    .vault-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+    .vault-actions button {
+      flex: 1;
+      padding: 10px;
+      border: 2px solid var(--vault-gold);
+      background: transparent;
+      color: var(--vault-gold);
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    .vault-actions button:hover {
+      background: var(--vault-gold);
+      color: var(--vault-white);
     }
     .create-vault-card {
       display: flex;
@@ -334,6 +358,63 @@
       border-color: var(--vault-gold);
       box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
     }
+    .file-upload-area {
+      border: 2px dashed rgba(201,168,76,0.4);
+      border-radius: 8px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-bottom: 24px;
+    }
+    .file-upload-area:hover {
+      border-color: var(--vault-gold);
+      background: rgba(201,168,76,0.05);
+    }
+    .file-upload-area input {
+      display: none;
+    }
+    .file-upload-icon {
+      font-size: 48px;
+      color: var(--vault-gold);
+      margin-bottom: 16px;
+    }
+    .selected-file {
+      background: rgba(201,168,76,0.1);
+      padding: 12px 16px;
+      border-radius: 6px;
+      margin-top: 16px;
+      font-size: 14px;
+      color: var(--vault-text);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .selected-file button {
+      background: none;
+      border: none;
+      color: var(--vault-text-light);
+      cursor: pointer;
+      font-size: 18px;
+    }
+    .selected-file button:hover {
+      color: var(--vault-gold);
+    }
+    input[type="datetime-local"] {
+      width: 100%;
+      padding: 14px 16px;
+      border: 2px solid rgba(201,168,76,0.2);
+      border-radius: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 15px;
+      color: var(--vault-text);
+      background: var(--vault-white);
+    }
+    input[type="datetime-local"]:focus {
+      outline: none;
+      border-color: var(--vault-gold);
+      box-shadow: 0 0 0 3px rgba(201,168,76,0.1);
+    }
   </style>
 </head>
 <body>
@@ -420,6 +501,57 @@
           <textarea id="vault-description" placeholder="Stories, photos, and memories for future generations..."></textarea>
         </div>
         <button type="submit" class="btn btn-primary">Create Vault</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- UPLOAD FILE MODAL -->
+  <div id="upload-file-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Upload File</h2>
+        <button class="modal-close" onclick="closeUploadFile()">&times;</button>
+      </div>
+      <div id="upload-message"></div>
+      <form id="uploadFileForm">
+        <div class="file-upload-area" onclick="document.getElementById('file-input').click()">
+          <div class="file-upload-icon">📁</div>
+          <p style="color: var(--vault-text); font-size: 15px;">Click to select a file</p>
+          <p style="color: var(--vault-text-light); font-size: 13px; margin-top: 8px;">Photos, videos, documents, audio files</p>
+          <input type="file" id="file-input" required>
+        </div>
+        <div id="selected-file-display"></div>
+        <div class="form-group">
+          <label>File Description (Optional)</label>
+          <textarea id="file-description" placeholder="What is this file? Why is it important?"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" id="upload-btn">Upload to Vault</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- TIME LOCK MODAL -->
+  <div id="time-lock-modal" class="modal hidden">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Time-Locked Message</h2>
+        <button class="modal-close" onclick="closeTimeLock()">&times;</button>
+      </div>
+      <div id="timelock-message"></div>
+      <form id="timeLockForm">
+        <div class="form-group">
+          <label>Message Title</label>
+          <input type="text" id="timelock-title" required placeholder="To my children on my 80th birthday">
+        </div>
+        <div class="form-group">
+          <label>Your Message</label>
+          <textarea id="timelock-content" required placeholder="This message will be revealed on the date you specify..."></textarea>
+        </div>
+        <div class="form-group">
+          <label>Unlock Date & Time</label>
+          <input type="datetime-local" id="timelock-date" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Lock Until Date</button>
       </form>
     </div>
   </div>
@@ -605,9 +737,13 @@
         const card = document.createElement('div');
         card.className = 'vault-card';
         card.innerHTML = `
-          <h3>${vault.name}</h3>
+          <h3>${vault.title}</h3>
           <p>${vault.description || 'No description'}</p>
           <div class="vault-meta">Created ${new Date(vault.created_at).toLocaleDateString()}</div>
+          <div class="vault-actions">
+            <button onclick="openUploadFile('${vault.id}')">📤 Upload</button>
+            <button onclick="openTimeLock('${vault.id}')">⏰ Time Lock</button>
+          </div>
         `;
         grid.appendChild(card);
       });
@@ -630,7 +766,7 @@
       e.preventDefault();
       clearMessage();
 
-      const name = document.getElementById('vault-name').value;
+      const title = document.getElementById('vault-name').value;
       const description = document.getElementById('vault-description').value;
 
       try {
@@ -640,7 +776,7 @@
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${authToken}`
           },
-          body: JSON.stringify({ name, description })
+          body: JSON.stringify({ title, description, isPublic: false })
         });
 
         const data = await response.json();
@@ -657,6 +793,178 @@
       } catch (error) {
         showMessage('Network error. Please try again.', true);
         console.error('Create vault error:', error);
+      }
+    });
+
+    // ========================================
+    // FILE UPLOAD
+    // ========================================
+
+    let currentVaultId = null;
+
+    function openUploadFile(vaultId) {
+      currentVaultId = vaultId;
+      document.getElementById('upload-file-modal').classList.remove('hidden');
+      document.getElementById('uploadFileForm').reset();
+      document.getElementById('selected-file-display').innerHTML = '';
+      clearUploadMessage();
+    }
+
+    function closeUploadFile() {
+      document.getElementById('upload-file-modal').classList.add('hidden');
+      currentVaultId = null;
+      clearUploadMessage();
+    }
+
+    function clearUploadMessage() {
+      const msg = document.getElementById('upload-message');
+      if (msg) msg.innerHTML = '';
+    }
+
+    function showUploadMessage(message, isError = false) {
+      const msg = document.getElementById('upload-message');
+      if (msg) {
+        msg.innerHTML = `<div class="${isError ? 'error-message' : 'success-message'}">${message}</div>`;
+      }
+    }
+
+    // Show selected file
+    document.getElementById('file-input').addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const display = document.getElementById('selected-file-display');
+        display.innerHTML = `
+          <div class="selected-file">
+            <span>📄 ${file.name} (${(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+            <button type="button" onclick="clearSelectedFile()">&times;</button>
+          </div>
+        `;
+      }
+    });
+
+    function clearSelectedFile() {
+      document.getElementById('file-input').value = '';
+      document.getElementById('selected-file-display').innerHTML = '';
+    }
+
+    // Upload File
+    document.getElementById('uploadFileForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearUploadMessage();
+
+      const fileInput = document.getElementById('file-input');
+      const description = document.getElementById('file-description').value;
+      const uploadBtn = document.getElementById('upload-btn');
+
+      if (!fileInput.files[0]) {
+        showUploadMessage('Please select a file', true);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      formData.append('description', description);
+
+      uploadBtn.disabled = true;
+      uploadBtn.textContent = 'UPLOADING...';
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/vaults/${currentVaultId}/upload`, {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: formData
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          showUploadMessage('File uploaded and encrypted successfully! 🔐');
+          setTimeout(() => {
+            closeUploadFile();
+            loadVaults();
+          }, 1500);
+        } else {
+          showUploadMessage(data.error || 'Upload failed', true);
+        }
+      } catch (error) {
+        showUploadMessage('Network error. Please try again.', true);
+        console.error('Upload error:', error);
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.textContent = 'Upload to Vault';
+      }
+    });
+
+    // ========================================
+    // TIME-LOCKED MESSAGES
+    // ========================================
+
+    function openTimeLock(vaultId) {
+      currentVaultId = vaultId;
+      document.getElementById('time-lock-modal').classList.remove('hidden');
+      document.getElementById('timeLockForm').reset();
+      clearTimeLockMessage();
+
+      // Set minimum date to now
+      const now = new Date();
+      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
+      document.getElementById('timelock-date').min = now.toISOString().slice(0, 16);
+    }
+
+    function closeTimeLock() {
+      document.getElementById('time-lock-modal').classList.add('hidden');
+      currentVaultId = null;
+      clearTimeLockMessage();
+    }
+
+    function clearTimeLockMessage() {
+      const msg = document.getElementById('timelock-message');
+      if (msg) msg.innerHTML = '';
+    }
+
+    function showTimeLockMessage(message, isError = false) {
+      const msg = document.getElementById('timelock-message');
+      if (msg) {
+        msg.innerHTML = `<div class="${isError ? 'error-message' : 'success-message'}">${message}</div>`;
+      }
+    }
+
+    // Create Time-Locked Message
+    document.getElementById('timeLockForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      clearTimeLockMessage();
+
+      const title = document.getElementById('timelock-title').value;
+      const content = document.getElementById('timelock-content').value;
+      const unlockDate = document.getElementById('timelock-date').value;
+
+      try {
+        const response = await fetch(`${API_BASE_URL}/api/vaults/${currentVaultId}/time-lock`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${authToken}`
+          },
+          body: JSON.stringify({ title, content, unlockDate })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          const date = new Date(unlockDate);
+          showTimeLockMessage(`Message locked until ${date.toLocaleDateString()} at ${date.toLocaleTimeString()} 🔒`);
+          setTimeout(() => {
+            closeTimeLock();
+            loadVaults();
+          }, 2000);
+        } else {
+          showTimeLockMessage(data.error || 'Failed to create time-locked message', true);
+        }
+      } catch (error) {
+        showTimeLockMessage('Network error. Please try again.', true);
+        console.error('Time lock error:', error);
       }
     });
   </script>
